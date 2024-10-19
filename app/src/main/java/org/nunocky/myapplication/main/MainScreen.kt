@@ -11,16 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import org.nunocky.myapplication.ui.theme.MyApplicationTheme
 
 
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier
+    viewModel: MainViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
-    val viewModel: MainViewModel = viewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButton = {
@@ -36,10 +36,17 @@ fun MainScreen(
     }
 }
 
+class MockViewModel : MainViewModel() {
+    init {
+        _uiState.value = MainScreenUiState(count = 99)
+    }
+}
+
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 fun MainScreenPreview() {
+    val mockViewModel = MockViewModel()
     MyApplicationTheme {
-        MainScreen()
+        MainScreen(viewModel = mockViewModel)
     }
 }
