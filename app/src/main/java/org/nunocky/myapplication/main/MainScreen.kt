@@ -36,16 +36,15 @@ fun MainScreen(
     }
 }
 
-class MockViewModel : MainViewModel() {
-    init {
-        _uiState.value = MainScreenUiState(count = 99)
-    }
-}
-
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 fun MainScreenPreview() {
-    val mockViewModel = MockViewModel()
+    val mockViewModel = object : MainViewModel() {
+        init {
+            _uiState.value = MainScreenUiState(count = 999)
+        }
+    }
+
     MyApplicationTheme {
         MainScreen(viewModel = mockViewModel)
     }
